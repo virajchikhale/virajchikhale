@@ -118,25 +118,23 @@
 
 ### 🐍 Contribution Snake
 
-> ⚠️ **Setup required** — see instructions below to activate the snake animation
-
 <!-- After setup, replace with: -->
 <p align="center"><img src="https://raw.githubusercontent.com/virajchikhale/virajchikhale/output/github-snake.svg" /></p>
 
 ---
 
-<details>
+<!-- <details>
 <summary>⏱️ Weekly Coding Stats (WakaTime — setup required)</summary>
 
-> Install WakaTime in VS Code → get API key → add GitHub Action → your stats auto-update here daily
+> Install WakaTime in VS Code → get API key → add GitHub Action → your stats auto-update here daily -->
 
 <!--START_SECTION:waka-->
 <!-- WakaTime stats will appear here after setup -->
 <!--END_SECTION:waka-->
 
-Setup guide: [github.com/anmol098/waka-readme-stats](https://github.com/anmol098/waka-readme-stats)
+<!-- Setup guide: [github.com/anmol098/waka-readme-stats](https://github.com/anmol098/waka-readme-stats)
 
-</details>
+</details> -->
 
 ---
 
