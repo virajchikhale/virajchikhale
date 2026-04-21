@@ -121,41 +121,7 @@
 > ⚠️ **Setup required** — see instructions below to activate the snake animation
 
 <!-- After setup, replace with: -->
-<!-- <p align="center"><img src="https://raw.githubusercontent.com/virajchikhale/virajchikhale/output/github-snake.svg" /></p> -->
-
-<details>
-<summary>⚙️ How to activate the snake animation</summary>
-
-1. Create `.github/workflows/snake.yml` in your profile repo
-2. Paste this workflow:
-
-```yaml
-name: Generate Snake
-on:
-  schedule:
-    - cron: "0 0 * * *"
-  workflow_dispatch:
-jobs:
-  generate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: Platane/snk@v3
-        with:
-          github_user_name: virajchikhale
-          outputs: |
-            dist/github-snake.svg
-            dist/github-snake-dark.svg?palette=github-dark
-      - uses: crazy-max/ghaction-github-pages@v3
-        with:
-          target_branch: output
-          build_dir: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-
-3. Run it manually from the Actions tab once, then replace the comment above with the img tag.
-
-</details>
+<p align="center"><img src="https://raw.githubusercontent.com/virajchikhale/virajchikhale/output/github-snake.svg" /></p>
 
 ---
 
