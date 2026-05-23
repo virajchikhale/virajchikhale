@@ -1,9 +1,4 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,100:1a1a2e&height=200&section=header&text=Viraj%20Chikhale&fontSize=50&fontColor=ffffff&fontAlignY=45&desc=AI%20Engineer%20%7C%20Full%20Stack%20Dev%20%7C%20Pune%2C%20India&descSize=18&descAlignY=68&animation=fadeIn" />
-  <source media="(prefers-color-scheme: light)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:0066cc,100:6633cc&height=200&section=header&text=Viraj%20Chikhale&fontSize=50&fontColor=ffffff&fontAlignY=45&desc=AI%20Engineer%20%7C%20Full%20Stack%20Dev%20%7C%20Pune%2C%20India&descSize=18&descAlignY=68&animation=fadeIn" />
-  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0066cc,100:6633cc&height=200&section=header&text=Viraj%20Chikhale&fontSize=50&fontColor=ffffff&fontAlignY=45&desc=AI%20Engineer%20%7C%20Full%20Stack%20Dev%20%7C%20Pune%2C%20India&descSize=18&descAlignY=68&animation=fadeIn" alt="header" />
-</picture>
-
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0F4C75,100:6A0572&height=200&section=header&text=Viraj%20Chikhale&fontSize=50&fontColor=ffffff&fontAlignY=45&desc=AI%20Engineer%20%7C%20Full%20Stack%20Dev%20%7C%20Pune%2C%20India&descSize=18&descAlignY=68&animation=fadeIn" alt="header" />
 <p align="center">
   <a href="https://git.io/typing-svg">
     <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=18&pause=1000&color=0066CC&center=true&vCenter=true&width=550&lines=AI+%26+LangChain+Engineer+%F0%9F%A4%96;Multi-Agent+Orchestration+%F0%9F%94%97;FastAPI+%7C+React+%7C+Next.js+Builder+%E2%9A%A1;Data+Science+%26+Power+BI+%F0%9F%93%8A;LiteLLM+%7C+MCP+%7C+RAG+Pipelines+%F0%9F%A7%A0;Open+to+Collaborate+%F0%9F%91%8B" alt="Typing SVG" />
@@ -160,12 +155,6 @@
   <img width="100%" src="https://raw.githubusercontent.com/virajchikhale/virajchikhale/output/github-snake.svg" alt="github contribution snake" />
 </picture>
 
-> ⚠️ **Snake setup required** — update your `.github/workflows/snake.yml` to generate both light and dark SVGs:
-> ```yaml
-> outputs: |
->   dist/github-snake.svg
->   dist/github-snake-dark.svg?palette=github-dark
-> ```
 
 ---
 
@@ -173,8 +162,4 @@
   <i>Always building, always learning — if something I've built resonates, let's talk.</i>
 </p>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:1a1a2e,100:0d1117&height=100&section=footer" />
-  <source media="(prefers-color-scheme: light)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:6633cc,100:0066cc&height=100&section=footer" />
-  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:6633cc,100:0066cc&height=100&section=footer" alt="footer" />
-</picture>
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:6A0572,100:0F4C75&height=100&section=footer" alt="footer" />
