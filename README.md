@@ -1,4 +1,8 @@
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0066cc,100:6633cc&height=200&section=header&text=Viraj%20Chikhale&fontSize=50&fontColor=ffffff&fontAlignY=45&desc=AI%20Engineer%20%7C%20Full%20Stack%20Dev%20%7C%20Pune%2C%20India&descSize=18&descAlignY=68&animation=fadeIn" />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,100:1a1a2e&height=200&section=header&text=Viraj%20Chikhale&fontSize=50&fontColor=ffffff&fontAlignY=45&desc=AI%20Engineer%20%7C%20Full%20Stack%20Dev%20%7C%20Pune%2C%20India&descSize=18&descAlignY=68&animation=fadeIn" />
+  <source media="(prefers-color-scheme: light)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:0066cc,100:6633cc&height=200&section=header&text=Viraj%20Chikhale&fontSize=50&fontColor=ffffff&fontAlignY=45&desc=AI%20Engineer%20%7C%20Full%20Stack%20Dev%20%7C%20Pune%2C%20India&descSize=18&descAlignY=68&animation=fadeIn" />
+  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0066cc,100:6633cc&height=200&section=header&text=Viraj%20Chikhale&fontSize=50&fontColor=ffffff&fontAlignY=45&desc=AI%20Engineer%20%7C%20Full%20Stack%20Dev%20%7C%20Pune%2C%20India&descSize=18&descAlignY=68&animation=fadeIn" alt="header" />
+</picture>
 
 <p align="center">
   <a href="https://git.io/typing-svg">
@@ -102,42 +106,75 @@
 <table align="center" width="100%" border="0" cellspacing="0" cellpadding="6">
   <tr>
     <td align="center" width="55%">
-      <img src="https://github-readme-stats.vercel.app/api?username=virajchikhale&show_icons=true&hide_border=true&count_private=true&theme=default&include_all_commits=true" alt="GitHub Stats" />
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api?username=virajchikhale&show_icons=true&hide_border=true&count_private=true&theme=github_dark&include_all_commits=true" />
+        <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats.vercel.app/api?username=virajchikhale&show_icons=true&hide_border=true&count_private=true&theme=default&include_all_commits=true" />
+        <img src="https://github-readme-stats.vercel.app/api?username=virajchikhale&show_icons=true&hide_border=true&count_private=true&theme=transparent&include_all_commits=true" alt="GitHub Stats" />
+      </picture>
     </td>
     <td align="center" width="45%">
-      <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=virajchikhale&layout=compact&hide_border=true&theme=default&langs_count=8" alt="Top Languages" />
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=virajchikhale&layout=compact&hide_border=true&theme=github_dark&langs_count=8" />
+        <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=virajchikhale&layout=compact&hide_border=true&theme=default&langs_count=8" />
+        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=virajchikhale&layout=compact&hide_border=true&theme=transparent&langs_count=8" alt="Top Languages" />
+      </picture>
     </td>
   </tr>
 </table>
 
 <p align="center">
-  <img src="https://streak-stats.demolab.com/?user=virajchikhale&hide_border=true&theme=default" alt="GitHub Streak" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://streak-stats.demolab.com/?user=virajchikhale&hide_border=true&theme=github-dark-blue&background=0d1117&stroke=0066cc&ring=6633cc&fire=ff6b6b&currStreakNum=ffffff&sideNums=ffffff&currStreakLabel=0066cc&sideLabels=888888&dates=888888" />
+    <source media="(prefers-color-scheme: light)" srcset="https://streak-stats.demolab.com/?user=virajchikhale&hide_border=true&theme=default" />
+    <img src="https://streak-stats.demolab.com/?user=virajchikhale&hide_border=true&theme=transparent" alt="GitHub Streak" />
+  </picture>
 </p>
 
 ---
 
 ### 📈 Contribution Activity
 
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=virajchikhale&theme=github-compact&hide_border=true&area=true" alt="Activity Graph" />
-</p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-activity-graph.vercel.app/graph?username=virajchikhale&theme=github-compact&bg_color=0d1117&color=0066cc&line=6633cc&point=ffffff&hide_border=true&area=true&area_color=0066cc" />
+  <source media="(prefers-color-scheme: light)" srcset="https://github-readme-activity-graph.vercel.app/graph?username=virajchikhale&theme=github-compact&hide_border=true&area=true" />
+  <img width="100%" src="https://github-readme-activity-graph.vercel.app/graph?username=virajchikhale&theme=github-compact&hide_border=true&area=true" alt="Activity Graph" />
+</picture>
 
 ---
 
 ### 🏆 GitHub Trophies
 
-<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-trophy.vercel.app/?username=virajchikhale&theme=darkhub&no-frame=true&column=6&margin-w=10&margin-h=10" />
+  <source media="(prefers-color-scheme: light)" srcset="https://github-profile-trophy.vercel.app/?username=virajchikhale&theme=flat&no-frame=true&column=6&margin-w=10&margin-h=10" />
   <img src="https://github-profile-trophy.vercel.app/?username=virajchikhale&theme=flat&no-frame=true&column=6&margin-w=10&margin-h=10" alt="Trophies" />
-</p>
+</picture>
 
 ---
 
 ### 🐍 Contribution Snake
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/virajchikhale/virajchikhale/output/github-snake.svg" alt="snake" />
-</p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/virajchikhale/virajchikhale/output/github-snake-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/virajchikhale/virajchikhale/output/github-snake.svg" />
+  <img width="100%" src="https://raw.githubusercontent.com/virajchikhale/virajchikhale/output/github-snake.svg" alt="github contribution snake" />
+</picture>
+
+> ⚠️ **Snake setup required** — update your `.github/workflows/snake.yml` to generate both light and dark SVGs:
+> ```yaml
+> outputs: |
+>   dist/github-snake.svg
+>   dist/github-snake-dark.svg?palette=github-dark
+> ```
 
 ---
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:6633cc,100:0066cc&height=150&section=footer" />
+<p align="center">
+  <i>Always building, always learning — if something I've built resonates, let's talk.</i>
+</p>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:1a1a2e,100:0d1117&height=100&section=footer" />
+  <source media="(prefers-color-scheme: light)" srcset="https://capsule-render.vercel.app/api?type=waving&color=0:6633cc,100:0066cc&height=100&section=footer" />
+  <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:6633cc,100:0066cc&height=100&section=footer" alt="footer" />
+</picture>
