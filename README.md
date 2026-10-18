@@ -23,6 +23,24 @@
 
 ---
 
+### 🤖 This Profile Runs an Agent
+
+Every night a small pipeline refreshes this page: a commit agent calls an MCP server for my latest commits, a drafting skill turns them into a summary, and the result is rendered below.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/virajchikhale/virajchikhale/agent-output/agent-loop-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/virajchikhale/virajchikhale/agent-output/agent-loop-light.svg" />
+  <img width="100%" src="https://raw.githubusercontent.com/virajchikhale/virajchikhale/agent-output/agent-loop-light.svg" alt="Agent loop: nightly run, commit agent, MCP server, draft skill, LLM, README card" />
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/virajchikhale/virajchikhale/agent-output/agent-trace-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/virajchikhale/virajchikhale/agent-output/agent-trace-light.svg" />
+  <img width="100%" src="https://raw.githubusercontent.com/virajchikhale/virajchikhale/agent-output/agent-trace-light.svg" alt="Agent trace of what I am building" />
+</picture>
+
+---
+
 ### 🧠 About Me
 
 - 🔭 **Software Engineer @ Equations Work, Bavdhan** — building production AI agents with LangChain, LangGraph & CrewAI
