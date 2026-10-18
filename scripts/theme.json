@@ -1,0 +1,24 @@
+{
+  "_comment": "Every colour and font used by the README images. Edit here, then run scripts/generate.py. The snake colours in .github/workflows/snake.yml are the one copy outside this file.",
+  "fonts": {
+    "sans": "-apple-system, Segoe UI, Helvetica, Arial, sans-serif",
+    "serif": "Georgia, Iowan Old Style, Times New Roman, serif",
+    "mono": "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+  },
+  "dark": {
+    "bg": "#111315",
+    "panel": "#181B1E",
+    "line": "#2A2D31",
+    "text": "#ECE9E2",
+    "muted": "#8E8B84",
+    "accent": "#E8A33D"
+  },
+  "light": {
+    "bg": "#FAF8F4",
+    "panel": "#F1EEE7",
+    "line": "#D9D5CC",
+    "text": "#1C1A17",
+    "muted": "#6B675F",
+    "accent": "#B4690E"
+  }
+}

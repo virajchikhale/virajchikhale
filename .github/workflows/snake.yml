@@ -12,9 +12,10 @@ jobs:
       - uses: Platane/snk@d8f6715049803e982ee5ff501b6b9b7d5deeb09b   # v3
         with:
           github_user_name: virajchikhale
+          # colours follow scripts/theme.json (accent + an empty-to-accent ramp); update both together
           outputs: |
-            dist/github-snake.svg
-            dist/github-snake-dark.svg?palette=github-dark
+            dist/github-snake.svg?color_snake=#B4690E&color_dots=#EFEBE3,#EBD3A6,#D9AE63,#C68A2E,#B4690E
+            dist/github-snake-dark.svg?palette=github-dark&color_snake=#E8A33D&color_dots=#1F2226,#4A3A1E,#7A5A22,#B07A2A,#E8A33D
       - uses: crazy-max/ghaction-github-pages@1d6ee9b181a81033a16bd707a1401afa978daab4   # v5
         with:
           target_branch: output

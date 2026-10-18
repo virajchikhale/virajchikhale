@@ -1,0 +1,160 @@
+{
+  "name": "Viraj Chikhale",
+  "role": "AI Engineer  ·  LLM & Agentic AI  ·  Pune, India",
+  "tagline": "Building LLM & agentic AI applications: LangGraph, MCP, RAG and FastAPI.",
+  "links": [
+    [
+      "Portfolio",
+      "https://virajchikhale.github.io/Portfolio/"
+    ],
+    [
+      "LinkedIn",
+      "https://www.linkedin.com/in/virajchikhale"
+    ],
+    [
+      "Email",
+      "mailto:chikhaleviraj.work@gmail.com"
+    ],
+    [
+      "GitHub",
+      "https://github.com/virajchikhale"
+    ]
+  ],
+  "fallback_trace": [
+    [
+      "Plan",
+      "what is Viraj building?",
+      "LLM agents, MCP tools and RAG services"
+    ],
+    [
+      "Done",
+      "summary ready",
+      "building a self-updating profile agent"
+    ]
+  ],
+  "projects": [
+    {
+      "slug": "insta-studio",
+      "title": "Insta Studio",
+      "stack": "FastAPI · Next.js · PostgreSQL",
+      "impact": "Runs multiple Instagram quote-card pages from one place, with scheduled posting.",
+      "accent": "a",
+      "url": "https://github.com/virajchikhale/insta_studio_codebase"
+    },
+    {
+      "slug": "retrieval",
+      "title": "Context-Aware Retrieval System",
+      "stack": "CrewAI · FAISS · FastAPI · Next.js",
+      "impact": "Pune travel recommendations: semantic place search behind an LLM agent.",
+      "accent": "c",
+      "url": "https://github.com/virajchikhale/Context-Aware-Retrieval-System"
+    },
+    {
+      "slug": "vcos",
+      "title": "VC·OS AI Portfolio",
+      "stack": "FastAPI · pgvector · RAG",
+      "impact": "A retro Mac OS desktop backed by a RAG service that answers questions about me.",
+      "accent": "b",
+      "url": "https://github.com/virajchikhale/Portfolio"
+    },
+    {
+      "slug": "movie-recs",
+      "title": "Movie Recommendation System",
+      "stack": "Scikit-learn · Streamlit · Embeddings",
+      "impact": "Hybrid filtering over embeddings, served in Streamlit.",
+      "accent": "d"
+    },
+    {
+      "slug": "attendance",
+      "title": "Attendance Management System",
+      "stack": "PHP · MySQL · AJAX",
+      "impact": "Attendance tracking for students and teachers across branches.",
+      "accent": "a",
+      "url": "https://github.com/virajchikhale/attendence_management"
+    }
+  ],
+  "highlight": [
+    "LangGraph",
+    "LangChain",
+    "MCP"
+  ],
+  "stack": [
+    [
+      "Agents & LLMs",
+      [
+        "Python",
+        "LangGraph",
+        "LangChain",
+        "MCP",
+        "RAG",
+        "LiteLLM",
+        "OpenClaw",
+        "FAISS",
+        "pgvector",
+        "CrewAI",
+        "OpenCV",
+        "MediaPipe",
+        "Azure AI Speech",
+        "Scikit-learn"
+      ]
+    ],
+    [
+      "Backend & Web",
+      [
+        "FastAPI",
+        "Node.js",
+        "React",
+        "Next.js",
+        "PHP",
+        "JavaScript",
+        "Bootstrap"
+      ]
+    ],
+    [
+      "Data",
+      [
+        "PostgreSQL",
+        "Redis",
+        "SQL",
+        "MySQL",
+        "Pandas",
+        "NumPy",
+        "Power BI",
+        "Tableau",
+        "Streamlit",
+        "Oracle"
+      ]
+    ],
+    [
+      "Infra & Observability",
+      [
+        "Docker",
+        "Kubernetes",
+        "MinIO",
+        "OpenTelemetry",
+        "Grafana",
+        "Loki"
+      ]
+    ],
+    [
+      "Tools",
+      [
+        "Git",
+        "GitHub",
+        "Linux",
+        "AWS",
+        "GCP",
+        "Figma",
+        "C++",
+        "Arduino",
+        "Raspberry Pi"
+      ]
+    ]
+  ],
+  "about": [
+    "I work on multi-agent systems, RAG pipelines and LLM tool-calling, including memory and fallback handling.",
+    "Lately I'm exploring LiteLLM for model-agnostic routing and MCP for tool orchestration.",
+    "I also like turning raw data into decisions with Power BI, Tableau and Streamlit."
+  ],
+  "footer": "Say hello at chikhaleviraj.work@gmail.com, or find my work history on LinkedIn."
+}
