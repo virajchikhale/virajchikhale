@@ -1,9 +1,11 @@
-"""Generates the animated agent-loop diagram and the "agent trace" card for the profile README.
+"""Generates every README image into assets/.
 
-Stdlib only. Writes assets/agent-loop-{dark,light}.svg and assets/agent-trace-{dark,light}.svg.
+Stdlib only. Colours and fonts come from theme.json and all page content from profile.json, so restyling or editing
+the page never needs a code change. cards.py draws the hero, headers, project cards and stack panel; this file draws
+the agent-loop diagram and the agent-trace card and runs the pipeline behind them.
 
 The trace card is written by an LLM from the profile's recent public commits. Set GROQ_API_KEY (free tier) to enable
-it; without a key, or if the call fails, a static fallback is used so the card always renders.
+it; without a key, or if the call fails, the fallback lines from profile.json are used so the card always renders.
 """
 import json
 import os
@@ -13,23 +15,28 @@ import urllib.request
 from html import escape
 from pathlib import Path
 
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))  # python -I does not add the script dir
+import cards  # noqa: E402
+
 USER = os.environ.get("GH_USER", "virajchikhale")
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
-OUT = Path(__file__).resolve().parent.parent / "assets"
-MCP_SERVER = Path(__file__).resolve().parent / "mcp_github_server.py"
+OUT = HERE.parent / "assets"
+MCP_SERVER = HERE / "mcp_github_server.py"
 
-THEMES = {
-    "dark": dict(bg="#0d1117", panel="#161b22", line="#30363d", text="#e6edf3", muted="#8b949e",
-                 a="#58a6ff", b="#bc8cff", c="#3fb950", d="#f0883e"),
-    "light": dict(bg="#ffffff", panel="#f6f8fa", line="#d0d7de", text="#1f2328", muted="#656d76",
-                  a="#0969da", b="#8250df", c="#1a7f37", d="#bc4c00"),
-}
+HEADERS = {"agent": "This Profile Runs an Agent", "projects": "Featured Projects", "stack": "Stack",
+           "about": "About Me", "activity": "Activity"}
 
-FALLBACK_DRAFT = [
-    ("Plan", "what is Viraj building?", "multi-agent systems, RAG, MCP tooling"),
-    ("Done", "summary ready", "agents · tools · memory · shipping"),
-]
+
+def load_json(name: str) -> dict:
+    return json.loads((HERE / name).read_text(encoding="utf-8"))
+
+
+def load_themes() -> dict:
+    """theme.json -> {"dark": {...}, "light": {...}}: each mode's colours merged with the shared fonts."""
+    theme = load_json("theme.json")
+    return {mode: {**theme["fonts"], **theme[mode]} for mode in ("dark", "light")}
 
 
 # ── agent loop diagram ─────────────────────────────────────────────────────
@@ -38,44 +45,43 @@ def agent_loop(t: dict) -> str:
     path = "M 90 130 H 810 V 235 H 90 V 160"
     dur = 10
     step = 720 / (720 + 105 + 720 + 75) * dur / 4  # seconds for the packet to cover one node gap
-    nodes = [  # x, label, sub, colour
-        (90, "Nightly run", "cron trigger", "a"),
-        (270, "Commit agent", "fetch commits", "c"),
-        (450, "Draft skill", "write summary", "d"),
-        (630, "LLM", "reasoning", "b"),
-        (810, "README card", "agent trace", "a"),
+    nodes = [  # x, label, sub
+        (90, "Nightly run", "cron trigger"),
+        (270, "Commit agent", "fetch commits"),
+        (450, "Draft skill", "write summary"),
+        (630, "LLM", "reasoning"),
+        (810, "README card", "agent trace"),
     ]
+
+    def flash(start: float) -> str:  # outline lights up in the accent colour as the packet passes
+        return (f'<animate attributeName="stroke" values="{t["line"]};{t["accent"]};{t["line"]};{t["line"]}" '
+                f'keyTimes="0;0.05;0.2;1" dur="{dur}s" begin="{start:.2f}s" repeatCount="indefinite"/>')
+
     parts = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280" width="900" height="280" '
-        f'font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">',
-        f'<rect width="900" height="280" rx="14" fill="{t["bg"]}"/>',
-        f'<text x="24" y="34" fill="{t["muted"]}" font-size="13">// this profile updates itself: the agent loop, live</text>',
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280" width="900" height="280" font-family="{t["mono"]}">',
+        f'<rect x="1" y="1" width="898" height="278" rx="12" fill="{t["panel"]}" stroke="{t["line"]}" stroke-width="1.5"/>',
+        f'<text x="24" y="34" fill="{t["muted"]}" font-size="12">// this profile updates itself every night</text>',
         f'<path d="{path}" fill="none" stroke="{t["line"]}" stroke-width="2" stroke-dasharray="6 6"/>',
-        f'<text x="450" y="258" fill="{t["muted"]}" font-size="12" text-anchor="middle">'
-        f'next run: fresh commits → fresh summary</text>',
+        f'<text x="450" y="258" fill="{t["muted"]}" font-size="12" text-anchor="middle">next run: fresh commits → fresh summary</text>',
         # the commit agent calls an MCP server, which calls the GitHub API
-        f'<path d="M 270 74 V 100 M 325 61 H 365" stroke="{t["c"]}" stroke-width="1.5" fill="none" opacity="0.7"/>'
+        f'<path d="M 270 74 V 100 M 325 61 H 365" stroke="{t["line"]}" stroke-width="1.5" fill="none"/>',
     ]
     for cx, label in ((270, "MCP server"), (420, "GitHub API")):
         parts.append(
-            f'<rect x="{cx - 55}" y="48" width="110" height="26" rx="13" fill="{t["panel"]}" stroke="{t["c"]}" stroke-width="1.5">'
-            f'<animate attributeName="stroke-width" values="1.5;4;1.5;1.5" keyTimes="0;0.08;0.2;1" dur="{dur}s" '
-            f'begin="{step:.2f}s" repeatCount="indefinite"/></rect>'
+            f'<rect x="{cx - 55}" y="48" width="110" height="26" rx="13" fill="{t["bg"]}" stroke="{t["line"]}" stroke-width="1.5">'
+            f'{flash(step)}</rect>'
             f'<text x="{cx}" y="65" fill="{t["text"]}" font-size="12" text-anchor="middle">{label}</text>'
         )
-    for i, (x, label, sub, col) in enumerate(nodes):
-        w, start = 140, round(i * step, 2)
+    for i, (x, label, sub) in enumerate(nodes):
         parts.append(
-            f'<g><rect x="{x - w / 2}" y="100" width="{w}" height="60" rx="10" fill="{t["panel"]}" '
-            f'stroke="{t[col]}" stroke-width="2">'
-            f'<animate attributeName="stroke-width" values="2;5;2;2" keyTimes="0;0.08;0.2;1" dur="{dur}s" '
-            f'begin="{start}s" repeatCount="indefinite"/></rect>'
+            f'<rect x="{x - 70}" y="100" width="140" height="60" rx="8" fill="{t["bg"]}" stroke="{t["line"]}" stroke-width="2">'
+            f'{flash(i * step)}</rect>'
             f'<text x="{x}" y="127" fill="{t["text"]}" font-size="14" font-weight="700" text-anchor="middle">{escape(label)}</text>'
-            f'<text x="{x}" y="147" fill="{t["muted"]}" font-size="11" text-anchor="middle">{escape(sub)}</text></g>'
+            f'<text x="{x}" y="147" fill="{t["muted"]}" font-size="11" text-anchor="middle">{escape(sub)}</text>'
         )
     parts.append(
-        f'<circle r="7" fill="{t["d"]}"><animateMotion dur="{dur}s" repeatCount="indefinite" path="{path}"/></circle>'
-        f'<circle r="14" fill="{t["d"]}" opacity="0.25"><animateMotion dur="{dur}s" repeatCount="indefinite" path="{path}"/></circle>'
+        f'<circle r="12" fill="{t["accent"]}" opacity="0.2"><animateMotion dur="{dur}s" repeatCount="indefinite" path="{path}"/></circle>'
+        f'<circle r="6" fill="{t["accent"]}"><animateMotion dur="{dur}s" repeatCount="indefinite" path="{path}"/></circle>'
         "</svg>"
     )
     return "".join(parts)
@@ -101,11 +107,11 @@ def recent_commits() -> list[str]:
     return json.loads(result["content"][0]["text"])
 
 
-def draft_summary(commits: list[str]) -> list[tuple[str, str, str]]:
+def draft_summary(commits: list[str], fallback: list) -> list[tuple[str, str, str]]:
     """The drafting skill: turns the commit list into the closing steps of the trace."""
     key = os.environ.get("GROQ_API_KEY", "").strip()
     if not key or not commits:
-        return FALLBACK_DRAFT
+        return fallback
     try:
         prompt = (
             "You are the author's coding agent writing a short tool-call trace about what they are building. "
@@ -122,10 +128,10 @@ def draft_summary(commits: list[str]) -> list[tuple[str, str, str]]:
         return [(s["tool"][:6], s["arg"][:32], s["note"][:48]) for s in steps[:2]]
     except Exception as e:  # network/quota/parse: keep the card rendering
         print(f"draft skill failed, using fallback: {e}")
-        return FALLBACK_DRAFT
+        return fallback
 
 
-def build_trace() -> list[tuple[str, str, str]]:
+def build_trace(fallback: list) -> list[tuple[str, str, str]]:
     try:
         commits = recent_commits()
     except Exception as e:
@@ -136,43 +142,52 @@ def build_trace() -> list[tuple[str, str, str]]:
         ("Agent", "commit-agent", fetched),
         ("Call", "mcp://github-commits", "tool: recent_commits" if commits else "tool unavailable"),
         ("Skill", "draft-summary", "drafting the update from commits"),
-        *draft_summary(commits),
+        *draft_summary(commits, fallback),
     ]
 
 
 def agent_trace(t: dict, steps: list[tuple[str, str, str]]) -> str:
     h = 70 + 62 * len(steps)
     parts = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 {h}" width="900" height="{h}" '
-        f'font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">',
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 {h}" width="900" height="{h}" font-family="{t["mono"]}">',
         "<style>.l{opacity:0;animation:in .5s forwards}@keyframes in{to{opacity:1}}"
         ".cur{animation:blink 1s steps(2) infinite}@keyframes blink{50%{opacity:0}}</style>",
-        f'<rect width="900" height="{h}" rx="14" fill="{t["bg"]}"/>',
-        f'<rect x="0" y="0" width="900" height="38" rx="14" fill="{t["panel"]}"/>',
-        '<circle cx="24" cy="19" r="6" fill="#ff5f56"/><circle cx="46" cy="19" r="6" fill="#ffbd2e"/>'
-        '<circle cx="68" cy="19" r="6" fill="#27c93f"/>',
-        f'<text x="450" y="24" fill="{t["muted"]}" font-size="13" text-anchor="middle">agent — what Viraj is building</text>',
+        f'<rect x="1" y="1" width="898" height="{h - 2}" rx="12" fill="{t["panel"]}" stroke="{t["line"]}" stroke-width="1.5"/>',
+        f'<line x1="1" y1="38" x2="899" y2="38" stroke="{t["line"]}" stroke-width="1.5"/>',
+        f'<circle cx="24" cy="19" r="5" fill="{t["line"]}"/><circle cx="42" cy="19" r="5" fill="{t["line"]}"/>'
+        f'<circle cx="60" cy="19" r="5" fill="{t["line"]}"/>',
+        f'<text x="450" y="24" fill="{t["muted"]}" font-size="12" text-anchor="middle">agent: what Viraj is building</text>',
     ]
     for i, (tool, arg, note) in enumerate(steps):
-        y = 82 + i * 62
-        d = f'style="animation-delay:{0.6 + i * 1.1}s"'
+        y = 80 + i * 62
         parts.append(
-            f'<g class="l" {d}><text x="28" y="{y}" fill="{t["c"]}" font-size="16">⏺</text>'
-            f'<text x="52" y="{y}" fill="{t["a"]}" font-size="16" font-weight="700">{escape(tool)}'
-            f'<tspan fill="{t["text"]}" font-weight="400">({escape(arg)})</tspan></text>'
-            f'<text x="52" y="{y + 24}" fill="{t["muted"]}" font-size="14">⎿  {escape(note)}</text></g>'
+            f'<g class="l" style="animation-delay:{0.6 + i * 1.1}s">'
+            f'<text x="28" y="{y}" fill="{t["accent"]}" font-size="15">⏺</text>'
+            f'<text x="52" y="{y}" fill="{t["text"]}" font-size="15" font-weight="700">{escape(tool)}'
+            f'<tspan fill="{t["muted"]}" font-weight="400">({escape(arg)})</tspan></text>'
+            f'<text x="52" y="{y + 24}" fill="{t["muted"]}" font-size="13">⎿  {escape(note)}</text></g>'
         )
-    parts.append(f'<text class="cur" x="28" y="{h - 18}" fill="{t["b"]}" font-size="16">▌</text></svg>')
+    parts.append(f'<text class="cur" x="28" y="{h - 18}" fill="{t["accent"]}" font-size="15">▌</text></svg>')
     return "".join(parts)
 
 
 def main() -> None:
     OUT.mkdir(exist_ok=True)
-    steps = build_trace()
-    for name, t in THEMES.items():
-        (OUT / f"agent-loop-{name}.svg").write_text(agent_loop(t), encoding="utf-8")
-        (OUT / f"agent-trace-{name}.svg").write_text(agent_trace(t, steps), encoding="utf-8")
-    print(f"wrote 4 SVGs to {OUT}")
+    profile = load_json("profile.json")
+    steps = build_trace([tuple(s) for s in profile["fallback_trace"]])
+    files = {}
+    for mode, t in load_themes().items():
+        files[f"hero-{mode}.svg"] = cards.hero(t, profile["name"], profile["role"], profile["tagline"], steps[-1][2])
+        files[f"agent-loop-{mode}.svg"] = agent_loop(t)
+        files[f"agent-trace-{mode}.svg"] = agent_trace(t, steps)
+        files[f"stack-{mode}.svg"] = cards.stack_panel(t, profile["stack"], profile["highlight"])
+        for i, (key, text) in enumerate(HEADERS.items()):
+            files[f"header-{key}-{mode}.svg"] = cards.header(t, text, phase=i * 1.4)
+        for i, p in enumerate(profile["projects"], 1):
+            files[f'card-{p["slug"]}-{mode}.svg'] = cards.project_card(t, p, i)
+    for fname, svg in files.items():
+        (OUT / fname).write_text(svg, encoding="utf-8")
+    print(f"wrote {len(files)} SVGs to {OUT}")
 
 
 if __name__ == "__main__":
