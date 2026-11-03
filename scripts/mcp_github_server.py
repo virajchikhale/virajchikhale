@@ -9,6 +9,8 @@ import urllib.request
 
 PROTOCOL = "2025-06-18"
 USER_RE = re.compile(r"^[A-Za-z0-9-]{1,39}$")
+# repos that hold data/content rather than code; their pushes say nothing about what is being built
+EXCLUDE_REPOS = {"insta_studio"}
 
 TOOLS = [{
     "name": "recent_commits",
@@ -32,6 +34,8 @@ def recent_commits(user: str, limit: int = 8) -> list[str]:
             continue
         head = e["payload"].get("head")
         repo = e["repo"]["name"]
+        if repo.split("/")[-1] in EXCLUDE_REPOS:
+            continue
         # one commit per repo, so an hourly bot branch can't crowd out everything else
         if not head or head in seen or repo in repos:
             continue
