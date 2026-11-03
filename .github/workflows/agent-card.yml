@@ -15,6 +15,7 @@ jobs:
       - name: Generate SVGs
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # read-only use: lifts the GitHub API rate limit
         run: |
           python3 -I scripts/generate.py
           mkdir dist && cp assets/*.svg dist/

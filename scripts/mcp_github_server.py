@@ -3,9 +3,11 @@
 Stdlib only. The commit agent in generate.py spawns this and talks to it as an MCP client.
 """
 import json
+import os
 import re
 import sys
 import urllib.request
+from datetime import datetime, timedelta, timezone
 
 PROTOCOL = "2025-06-18"
 USER_RE = re.compile(r"^[A-Za-z0-9-]{1,39}$")
@@ -14,48 +16,61 @@ EXCLUDE_REPOS = {"insta_studio"}
 
 TOOLS = [{
     "name": "recent_commits",
-    "description": "Latest public commit messages pushed by a GitHub user, as 'repo: message' lines.",
+    "description": ("Recent public commits by a GitHub user across their most recently pushed repos, one line each: "
+                    "'date repo (+added/-removed, N files): message'. Newest first."),
     "inputSchema": {
         "type": "object",
-        "properties": {"user": {"type": "string"}, "limit": {"type": "integer", "default": 8}},
+        "properties": {
+            "user": {"type": "string"},
+            "per_repo": {"type": "integer", "default": 5},
+            "days": {"type": "integer", "default": 30},
+            "max_repos": {"type": "integer", "default": 6},
+        },
         "required": ["user"],
     },
 }]
 
 
-def recent_commits(user: str, limit: int = 8) -> list[str]:
+def recent_commits(user: str, per_repo: int = 5, days: int = 30, max_repos: int = 6) -> list[str]:
     if not USER_RE.match(user):
         raise ValueError("invalid GitHub username")
-    events = _get(f"https://api.github.com/users/{user}/events/public")
-    msgs, seen, repos = [], set(), set()
-    for e in events:
-        # public push events carry only the head SHA now, so look the commit up
-        if e.get("type") != "PushEvent" or len(msgs) >= limit:
-            continue
-        head = e["payload"].get("head")
-        repo = e["repo"]["name"]
-        if repo.split("/")[-1] in EXCLUDE_REPOS:
-            continue
-        # one commit per repo, so an hourly bot branch can't crowd out everything else
-        if not head or head in seen or repo in repos:
-            continue
-        seen.add(head)
+    per_repo, days, max_repos = max(1, min(per_repo, 10)), max(1, min(days, 90)), max(1, min(max_repos, 10))
+    since = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    repos = _get(f"https://api.github.com/users/{user}/repos?sort=pushed&per_page=30")
+    picked = [r for r in repos
+              if not r["fork"] and not r["archived"] and r["name"] not in EXCLUDE_REPOS
+              and r["name"].lower() != user.lower() and (r.get("pushed_at") or "") >= since][:max_repos]
+    lines = []
+    for r in picked:
         try:
-            c = _get(f'https://api.github.com/repos/{repo}/commits/{head}')
-        except Exception:  # private/deleted repo or rate limit: skip this push
+            commits = _get(f'https://api.github.com/repos/{r["full_name"]}/commits'
+                           f'?author={user}&since={since}&per_page={per_repo * 3}')
+        except Exception:  # private/deleted repo or rate limit: skip this repo
             continue
-        lines = [l for l in c["commit"]["message"].splitlines() if l.strip()]
-        subject = lines[0]
-        # a PR merge commit says nothing about the work; its body holds the PR title
-        if subject.startswith("Merge pull request") and len(lines) > 1:
-            subject = lines[1]
-        repos.add(repo)
-        msgs.append(f'{repo.split("/")[-1]}: {subject[:80]}')
-    return msgs
+        kept = 0
+        for c in commits:
+            if kept >= per_repo:
+                break
+            if len(c.get("parents", [])) > 1:  # PR merge commit: its real commits are listed on their own
+                continue
+            kept += 1
+            subject = c["commit"]["message"].splitlines()[0][:90]
+            try:
+                d = _get(f'https://api.github.com/repos/{r["full_name"]}/commits/{c["sha"]}')
+                st = d.get("stats", {})
+                size = f' (+{st.get("additions", 0)}/-{st.get("deletions", 0)}, {len(d.get("files", []))} files)'
+            except Exception:  # size is a hint only
+                size = ""
+            lines.append((c["commit"]["author"]["date"], f'{c["commit"]["author"]["date"][:10]} {r["name"]}{size}: {subject}'))
+    return [text for _, text in sorted(lines, reverse=True)]
 
 
 def _get(url: str):
-    req = urllib.request.Request(url, headers={"User-Agent": "profile-mcp-github"})
+    headers = {"User-Agent": "profile-mcp-github", "Accept": "application/vnd.github+json"}
+    token = os.environ.get("GITHUB_TOKEN", "").strip()
+    if token:  # raises the API limit from 60 to 5000 requests/hour; read-only use
+        headers["Authorization"] = f"Bearer {token}"
+    req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=15) as r:
         return json.load(r)
 
@@ -75,7 +90,8 @@ def handle(msg: dict) -> dict | None:
             if params.get("name") != "recent_commits":
                 raise ValueError("unknown tool")
             args = params.get("arguments", {})
-            out = recent_commits(args["user"], int(args.get("limit", 8)))
+            out = recent_commits(args["user"], int(args.get("per_repo", 5)), int(args.get("days", 30)),
+                                 int(args.get("max_repos", 6)))
             result = {"content": [{"type": "text", "text": json.dumps(out)}]}
         except Exception as e:
             result = {"isError": True, "content": [{"type": "text", "text": str(e)}]}
