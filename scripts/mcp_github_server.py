@@ -25,20 +25,28 @@ def recent_commits(user: str, limit: int = 8) -> list[str]:
     if not USER_RE.match(user):
         raise ValueError("invalid GitHub username")
     events = _get(f"https://api.github.com/users/{user}/events/public")
-    msgs, seen = [], set()
+    msgs, seen, repos = [], set(), set()
     for e in events:
         # public push events carry only the head SHA now, so look the commit up
         if e.get("type") != "PushEvent" or len(msgs) >= limit:
             continue
         head = e["payload"].get("head")
-        if not head or head in seen:
+        repo = e["repo"]["name"]
+        # one commit per repo, so an hourly bot branch can't crowd out everything else
+        if not head or head in seen or repo in repos:
             continue
         seen.add(head)
         try:
-            c = _get(f'https://api.github.com/repos/{e["repo"]["name"]}/commits/{head}')
+            c = _get(f'https://api.github.com/repos/{repo}/commits/{head}')
         except Exception:  # private/deleted repo or rate limit: skip this push
             continue
-        msgs.append(f'{e["repo"]["name"].split("/")[-1]}: {c["commit"]["message"].splitlines()[0][:80]}')
+        lines = [l for l in c["commit"]["message"].splitlines() if l.strip()]
+        subject = lines[0]
+        # a PR merge commit says nothing about the work; its body holds the PR title
+        if subject.startswith("Merge pull request") and len(lines) > 1:
+            subject = lines[1]
+        repos.add(repo)
+        msgs.append(f'{repo.split("/")[-1]}: {subject[:80]}')
     return msgs
 
 
