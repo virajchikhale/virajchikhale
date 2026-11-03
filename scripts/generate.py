@@ -11,6 +11,7 @@ import json
 import os
 import subprocess
 import sys
+import urllib.error
 import urllib.request
 from html import escape
 from pathlib import Path
@@ -21,7 +22,7 @@ import cards  # noqa: E402
 
 USER = os.environ.get("GH_USER", "virajchikhale")
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
 OUT = HERE.parent / "assets"
 MCP_SERVER = HERE / "mcp_github_server.py"
 
@@ -127,7 +128,8 @@ def draft_summary(commits: list[str], fallback: list) -> list[tuple[str, str, st
             steps = json.loads(json.load(r)["choices"][0]["message"]["content"])["steps"]
         return [(s["tool"][:6], s["arg"][:32], s["note"][:48]) for s in steps[:2]]
     except Exception as e:  # network/quota/parse: keep the card rendering
-        print(f"draft skill failed, using fallback: {e}")
+        detail = e.read().decode(errors="replace")[:300] if isinstance(e, urllib.error.HTTPError) else ""
+        print(f"draft skill failed, using fallback: {e} {detail}")
         return fallback
 
 
