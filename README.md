@@ -4,7 +4,7 @@
   <img width="100%" src="https://raw.githubusercontent.com/virajchikhale/virajchikhale/agent-output/hero-light.svg" alt="Viraj Chikhale: AI Engineer  ·  LLM &amp; Agentic AI  ·  Pune, India" />
 </picture>
 
-<p><a href="https://virajchikhale.github.io/Portfolio/">Portfolio</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/virajchikhale">LinkedIn</a> &nbsp;·&nbsp; <a href="mailto:chikhaleviraj.work@gmail.com">Email</a> &nbsp;·&nbsp; <a href="https://github.com/virajchikhale">GitHub</a></p>
+<p><a href="https://www.linkedin.com/in/virajchikhale">LinkedIn</a> &nbsp;·&nbsp; <a href="mailto:chikhaleviraj.work@gmail.com">Email</a> &nbsp;·&nbsp; <a href="https://github.com/virajchikhale">GitHub</a></p>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/virajchikhale/virajchikhale/agent-output/header-agent-dark.svg" />
